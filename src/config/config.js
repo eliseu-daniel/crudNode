@@ -1,4 +1,4 @@
-const mysql = require('mysql2')
+const mysql = require('mysql2/promise')
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -14,7 +14,6 @@ const con = async () => {
     try {
         const connection = await pool.getConnection()
         console.log('Conectado com Sucesso')
-        connection.release()
     } catch (error) {
         console.log('Erro ao conectar', error.message)
         process.exit(1)

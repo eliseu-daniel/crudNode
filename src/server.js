@@ -6,36 +6,52 @@ const bd = require('./config/database')
 app.use(express.json())
 
 app.get('/usuarios', async (req,res,next) => {
-    const users = await bd.all()
+    try{
+        const users = await bd.all()
+        res.json(users)
+    }catch(error){
+        res.status(500).json({error: error.message})
+    }
+})
+
+app.get('/usuarios/:id', async (req,res,next) => {
+    try{
+        const users = await bd.show(req.params.id)
+        res.json(users)
+    }catch(error){
+        res.status(500).json({error: error.message})
+    }
+})
+
+app.post('/usuarios', async (req,res, next) => {
+    try{
+        const {nome, email} = req.body
+        const users = await bd.create(nome, email)
+        res.json(users)
+    }catch(error){
+        res.status(500).json({error: error.message})
+    }
+})
+
+app.put('usuarios/:id',async (req, res, next) => {
+    try{
+    const {nome, email} = req.body
+    const users = await bd.update(req.params.id, nome, email)
     res.json(users)
+    }catch(error){
+        res.status(500).json({error: error.message})
+    }
 })
 
-app.get('/usuarios/:id', (req,res,next) => {
-    res.send(bd.show(req.params.id))
-})
-
-app.post('/usuarios', (req,res, next) => {
-    const users = bd.create({
-        nome: req.body.nome,
-        email: req.body.email
-    })
-    res.send(users)
-})
-
-app.put('usuarios/:id', (req, res, next) => {
-    const users = bd.update({
-        id:    req.params.id,
-        nome:  req.params.nome,
-        email: req.params.email
-    })
-    res.send(users)
-})
-
-app.delete('usuarios/:id', (req, res, next) => {
-    const users = bd.delet({
-        id: req.params.id
-    })
-    res.send(users)
+app.delete('usuarios/:id',async (req, res, next) => {
+    try{
+    const users = await bd.delet(
+        req.params.id
+    )
+    res.json(users)
+}catch(error){
+    res.status(500).json({error: error.message})
+}
 })
 
 app.listen(porta, () => {
