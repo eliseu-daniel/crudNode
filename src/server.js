@@ -5,9 +5,9 @@ const bd = require('./config/database')
 
 app.use(express.json())
 
-
-app.get('/usuarios', (req,res,next) => {
-    res.send(bd.all())
+app.get('/usuarios', async (req,res,next) => {
+    const users = await bd.all()
+    res.json(users)
 })
 
 app.get('/usuarios/:id', (req,res,next) => {

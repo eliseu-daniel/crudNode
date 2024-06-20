@@ -1,4 +1,4 @@
-const mysql = require('mysql2/promise')
+const mysql = require('mysql2')
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -9,13 +9,14 @@ const pool = mysql.createPool({
     database: process.env.DB_NAME
 })
 
+
 const con = async () => {
     try {
         const connection = await pool.getConnection()
         console.log('Conectado com Sucesso')
         connection.release()
     } catch (error) {
-        console.log('Erro ao conectar', error)
+        console.log('Erro ao conectar', error.message)
         process.exit(1)
     }
 }

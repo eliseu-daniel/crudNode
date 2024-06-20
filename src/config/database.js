@@ -1,38 +1,38 @@
-const mysql = require('mysql2/promise')
+const mysql = require('mysql2')
 const dotenv = require('dotenv')
 const {pool} = require('./config')
+
 
 dotenv.config()
 
 
-function all(){
-    const sql = pool.query('SELECT * FROM users')
-
-    return {sql}
+async function all(){
+    const sql = await pool.execute('SELECT * FROM users')
+    return sql
 }
 
-function create(nome, email){
+async function create(nome, email){
     const sql = 'INSERT INTO users (name, email) VALUES (?, ?)'
-    const params = pool.execute(sql, [nome, email])
-    return {id: params.insertId, nome, email}
+    const params = await pool.execute(sql, [nome, email])
+    return {nome, email}
 }
 
-function show(id){
-    const sql = 'SELECT * FROM users WHERE id= ?'
-    const params = [id]
-    return {sql, params}
+async function show(id){
+    const sql = ('SELECT * FROM users WHERE id= ?')
+    const params = await pool.execute(sql, id)
+    return {params}
 }
 
-function update(id, nome, email){
+async function update(id, nome, email){
     const sql = "UPDATE users SET name= ?, email= ? WHERE id= ?"
-    const params = [nome, email, id]
-    return {sql, params}
+    const params = await pool.execute(sql, [nome, email, id])
+    return {params}
 }
 
-function delet(id){
+async function delet(id){
     const sql = 'DELETE FROM users WHERE id= ?'
-    const params = [id]
-    return {sql, params}
+    const params = await pool.execute(sql, id)
+    return {params}
 }
 
 module.exports = {all, show, create, update, delet}
