@@ -21,18 +21,14 @@ async function show(id){
 }
 
 async function update(id, nome, email){
-    console.log(id, nome, email)
-
     const sql = 'UPDATE users SET name= ?, email= ? WHERE id = ?'
     await pool.execute(sql, [nome, email, id])
     return {id, nome, email}
 }
 
 async function delet(id){
-    console.log(id)
-    const [sql] = 'DELETE FROM users WHERE id = ?'
-    await pool.execute(sql, [id])
-    return {id}
+    const [sql] = await pool.execute('DELETE FROM users WHERE id = ?', [id])
+    return sql [0]
 }
 
 module.exports = {all, show, create, update, delet}

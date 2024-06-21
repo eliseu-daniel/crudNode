@@ -33,7 +33,7 @@ app.post('/usuarios', async (req,res, next) => {
     }
 })
 
-app.put('usuarios/:id',async (req, res, next) => {
+app.put('/usuarios/:id',async (req, res, next) => {
     try{
     const {nome, email} = req.body
     const users = await bd.update(req.params.id, nome, email)
@@ -43,7 +43,7 @@ app.put('usuarios/:id',async (req, res, next) => {
     }
 })
 
-app.delete('usuarios/:id',async (req, res, next) => {
+app.delete('/usuarios/:id',async (req, res, next) => {
     try{
     const users = await bd.delet(
         req.params.id
